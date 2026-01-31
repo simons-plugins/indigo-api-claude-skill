@@ -174,7 +174,7 @@ Both APIs support:
 - **API Keys** (recommended) - Per-app, revocable, secure
 - **Local Secrets** - Shared secret for trusted local network
 
-API keys created at [Indigo Account Portal](https://accounts.indigodomo.com).
+API keys created at [Indigo Account Portal](https://www.indigodomo.com/account/).
 
 ## Requirements
 
