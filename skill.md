@@ -175,7 +175,7 @@ Both APIs use **API Keys** or **Local Secrets**:
 
 - [Official API Documentation](https://wiki.indigodomo.com/doku.php?id=indigo_2025.1_documentation:api)
 - [Indigo Forum](https://forums.indigodomo.com/)
-- [Indigo Account Portal](https://accounts.indigodomo.com) - Create API keys
+- [Indigo Account Portal](https://www.indigodomo.com/account/) - Create API keys
 
 ## Version Information
 

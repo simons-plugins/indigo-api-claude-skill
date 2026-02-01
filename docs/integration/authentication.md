@@ -22,7 +22,7 @@ Complete guide to authenticating with Indigo's WebSocket and HTTP APIs using API
 
 ### Creating an API Key
 
-1. Visit [Indigo Account Portal](https://accounts.indigodomo.com)
+1. Visit [Indigo Account Portal](https://www.indigodomo.com/account/)
 2. Log in with your Indigo account
 3. Navigate to "API Keys" section
 4. Click "Create New API Key"
@@ -221,7 +221,7 @@ https://REFLECTOR.indigodomo.net/v2/api/indigo.devices
 **Solutions**:
 - Verify "Start Local Server" is enabled in preferences
 - Check firewall allows port 8176 (local) or 443 (Reflector)
-- Confirm Reflector ID at accounts.indigodomo.com
+- Confirm Reflector ID at https://www.indigodomo.com/account/
 
 ### WebSocket Connection Drops Immediately
 
