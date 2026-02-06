@@ -155,6 +155,17 @@ Both APIs support the same authentication methods:
    - HTTP: [http-api.md](http-api.md)
 4. **Command reference**: [device-commands.md](device-commands.md)
 
+## API Feature Parity
+
+While both APIs provide access to core Indigo functionality (devices, variables, action groups), there are some differences:
+
+### Known Differences:
+- **Folders**: HTTP API includes folder objects; WebSocket handles folders differently
+- **Command Availability**: Some commands may be specific to one transport
+- **Data Structure**: Response formats are generally consistent but may vary in edge cases
+
+**Recommendation:** For critical functionality, test with your target transport to verify command availability. The official Indigo wiki may not fully document all differences.
+
 ## Can I Use Both?
 
 **Yes!** Many applications combine both APIs:

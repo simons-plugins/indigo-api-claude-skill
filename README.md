@@ -166,7 +166,7 @@ Connect Indigo to other services:
 - Perfect for occasional access
 
 ### Same Commands, Two Transports
-Both APIs use identical command messages - choose the transport that fits your use case.
+Both APIs support the core command messages documented here, though some commands may be specific to one transport. Choose the transport that fits your use case.
 
 ## Authentication
 
