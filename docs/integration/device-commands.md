@@ -2,6 +2,8 @@
 
 Complete reference for all device commands available via WebSocket and HTTP APIs.
 
+> **Note on Command Availability:** The commands documented here are primarily tested with the WebSocket API and are generally available in both transports. However, some commands may be transport-specific. If a command doesn't work in your chosen transport, try the alternative or consult the official Indigo documentation.
+
 ## Command Message Structure
 
 All commands use this JSON format:

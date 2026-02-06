@@ -129,11 +129,13 @@ This skill contains focused API documentation (~50KB). Load selectively based on
    - Best for: Scripts, webhooks, periodic checks
    - Use when: Occasional commands or polling is acceptable
 
-### Same Commands, Two Transports
+### Command Messages Across Transports
 
-Both APIs use the **same command messages** (documented in `device-commands.md`):
+The APIs share most command messages (documented in `device-commands.md`), though some commands may be specific to one transport:
 - WebSocket sends commands via persistent connection
 - HTTP sends commands via POST to `/v2/api/command`
+
+**Note:** While the core device, dimmer, variable, and action group commands are available in both APIs, some advanced commands may only be available via HTTP or WebSocket. Consult the official Indigo documentation for transport-specific commands.
 
 ### Authentication
 
