@@ -85,6 +85,25 @@ This skill contains focused API documentation (~50KB). Load selectively based on
 - "How do I secure my API connection?"
 - "What's the difference between API keys and local secrets?"
 
+### Device Capability Catalog
+
+**"What can device X do?" / "How do I control a [plugin] thermostat?" / "What states does a Shelly device have?"**
+
+If the user has the `indigo-device-catalog` installed (check for `../indigo-device-catalog/catalog/` relative to this skill):
+1. Read the relevant class file (e.g., `../indigo-device-catalog/catalog/by-class/thermostat.json`)
+2. Find the profile matching the `pluginId` and `deviceTypeId`
+3. Use `capabilities` to determine which controls are available
+4. Use `states` to know what data the device exposes
+
+**"What device types does plugin X support?"**
+1. Read `../indigo-device-catalog/catalog/by-plugin/_index.json`
+2. Look up the plugin ID to see all device types it creates
+
+**"What base classes are available?" / "Show all device types"**
+1. Read `../indigo-device-catalog/catalog/_index.json`
+
+**Catalog repo**: https://github.com/simons-plugins/indigo-device-catalog
+
 ## Workflow Examples
 
 ### Building an iOS App
