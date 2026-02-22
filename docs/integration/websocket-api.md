@@ -298,8 +298,8 @@ See [device-commands.md](device-commands.md) for complete command reference.
 
 **Connection URLs**:
 ```
-ws://localhost:8176/v2/api/ws/page-feed
-wss://YOUR-REFLECTOR-NAME.indigodomo.net/v2/api/ws/page-feed
+ws://192.168.1.100:8176/v2/api/ws/page-feed
+wss://{REFLECTOR}.indigodomo.net/v2/api/ws/page-feed
 ```
 
 ### Rendering Control Pages in a Browser/WebView
@@ -307,16 +307,22 @@ wss://YOUR-REFLECTOR-NAME.indigodomo.net/v2/api/ws/page-feed
 To display a control page's rendered content, load the following URL in a browser or WKWebView:
 
 ```
-http://localhost:8176/web/controlpage.html?id={pageID}
-https://YOUR-REFLECTOR-NAME.indigodomo.net/web/controlpage.html?id={pageID}
+http://192.168.1.100:8176/web/controlpage.html?id={pageID}
+https://{REFLECTOR}.indigodomo.net/web/controlpage.html?id={pageID}
 ```
 
 For example, a page with ID `963336187` would be:
 ```
-https://my-reflector.indigodomo.net/web/controlpage.html?id=963336187
+https://{REFLECTOR}.indigodomo.net/web/controlpage.html?id=963336187
 ```
 
-Authentication is required via `Authorization: Bearer {API_KEY}` header.
+Authentication is required via `Authorization: Bearer {API_KEY}` header. In a WKWebView, inject the header using a `URLRequest`:
+
+```swift
+var request = URLRequest(url: url)
+request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+webView.load(request)
+```
 
 ### Control Page Object Structure
 
@@ -353,7 +359,7 @@ Received when a new control page is added to the Indigo Server after the connect
 {
   "message": "add",
   "objectType": "indigo.ControlPage",
-  "objectDict": {}  // ControlPage object as outlined above
+  "objectDict": { ... }
 }
 ```
 
@@ -366,11 +372,11 @@ Received when a control page has been updated on the Indigo server. Does not all
   "message": "patch",
   "objectType": "indigo.ControlPage",
   "objectId": 963336187,
-  "patch": {}  // dictdiffer patch object - see Object Patches section
+  "patch": [["change", "name", ["Old Name", "New Name"]]]
 }
 ```
 
-Patch objects are created via the `dictdiffer` Python module, by comparing the control page dictionary for the old page with the new dictionary as received in the `control_page_updated()` Plugin method call.
+Patch objects use `dictdiffer` format. See the Object Patches section above for details on applying patches.
 
 ### Delete Control Page Message
 
