@@ -294,11 +294,95 @@ See [device-commands.md](device-commands.md) for complete command reference.
 
 ## Control Page Feed
 
-**Read-only feed** - provides updates about control pages but does not accept commands.
+**Read-only feed** - used for managing a list of available control pages. No command messages can be sent; its purpose is to use incoming messages to manage a list of available control pages which the user can select to open.
 
-Pages with `remoteDisplay: true` will generate add/patch/delete messages.
+**Connection URLs**:
+```
+ws://localhost:8176/v2/api/ws/page-feed
+wss://YOUR-REFLECTOR-NAME.indigodomo.net/v2/api/ws/page-feed
+```
 
-Use for building custom UI that mirrors Indigo's control pages.
+### Rendering Control Pages in a Browser/WebView
+
+To display a control page's rendered content, load the following URL in a browser or WKWebView:
+
+```
+http://localhost:8176/web/controlpage.html?id={pageID}
+https://YOUR-REFLECTOR-NAME.indigodomo.net/web/controlpage.html?id={pageID}
+```
+
+For example, a page with ID `963336187` would be:
+```
+https://my-reflector.indigodomo.net/web/controlpage.html?id=963336187
+```
+
+Authentication is required via `Authorization: Bearer {API_KEY}` header.
+
+### Control Page Object Structure
+
+```json
+{
+  "class": "indigo.ControlPage",
+  "backgroundImage": "",
+  "description": "",
+  "folderId": 0,
+  "globalProps": {},
+  "hideTabBar": true,
+  "id": 963336187,
+  "name": "Weather Images",
+  "pluginProps": {},
+  "remoteDisplay": true,
+  "sharedProps": {}
+}
+```
+
+### Refresh Control Pages
+
+```json
+{
+  "message": "refresh",
+  "objectType": "indigo.ControlPage"
+}
+```
+
+### Add Control Page Message
+
+Received when a new control page is added to the Indigo Server after the connection is opened, or when a control page's `remoteDisplay` property is changed from `false` to `true`.
+
+```json
+{
+  "message": "add",
+  "objectType": "indigo.ControlPage",
+  "objectDict": {}  // ControlPage object as outlined above
+}
+```
+
+### Update Control Page Message (Patch)
+
+Received when a control page has been updated on the Indigo server. Does not allow users to update control pages via the WebSocket API.
+
+```json
+{
+  "message": "patch",
+  "objectType": "indigo.ControlPage",
+  "objectId": 963336187,
+  "patch": {}  // dictdiffer patch object - see Object Patches section
+}
+```
+
+Patch objects are created via the `dictdiffer` Python module, by comparing the control page dictionary for the old page with the new dictionary as received in the `control_page_updated()` Plugin method call.
+
+### Delete Control Page Message
+
+Received when a control page is deleted from the Indigo server, or when a control page's `remoteDisplay` property is set from `true` to `false`.
+
+```json
+{
+  "message": "delete",
+  "objectType": "indigo.ControlPage",
+  "objectId": 123456789
+}
+```
 
 ## Log Feed
 
