@@ -397,6 +397,33 @@ Received when a control page is deleted from the Indigo server, or when a contro
 - Then receives real-time log updates
 - Only accepts `"add"` messages (read-only for logs)
 
+### Log Entry Message (received)
+
+Each log entry arrives as an `"add"` message with the log data in `objectDict`:
+
+```json
+{
+  "message": "add",
+  "objectDict": {
+    "message": "sent \"Living Room Pendant\" set brightness to 30",
+    "timeStamp": "2026-02-23T20:47:10.617000",
+    "typeStr": "Z-Wave",
+    "typeVal": 8
+  }
+}
+```
+
+**objectDict fields** (all camelCase):
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `message` | String | The log message text |
+| `timeStamp` | String | Timestamp in `yyyy-MM-dd'T'HH:mm:ss.SSSSSS` format (local server time, no timezone indicator). **Note the capital S** — this is camelCase `timeStamp`, not `timestamp`. |
+| `typeStr` | String | Source/plugin name (e.g. `"Z-Wave"`, `"Web Server Warning"`, `"Heatmiser-Neo Error"`) |
+| `typeVal` | Int | Log level numeric value (1 = error, 3 = warning, 8 = info) |
+
+> **Important**: The WebSocket log feed uses **camelCase** keys (`timeStamp`, `typeStr`, `typeVal`), which differ from both the Python API's PascalCase (`TimeStamp`, `TypeStr`, `TypeVal`) and all-lowercase conventions. The `typeStr` suffix indicates severity: names ending in `"Error"` are errors, `"Warning"` are warnings, `"Debug"` are debug messages.
+
 ### Send Log Message
 
 ```json
