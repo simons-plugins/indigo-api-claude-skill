@@ -25,6 +25,7 @@ All commands use this JSON format:
 |-------------|----------|------------------|
 | **All Devices** | statusRequest, toggle, turnOn, turnOff, enable | Basic control |
 | **Dimmer** | setBrightness, brighten, dim | Light intensity |
+| **Dimmer (Color)** | setColorLevels | RGB, white level, color temperature |
 | **Speed Control** | setSpeedIndex, setSpeedLevel, increaseSpeed, decreaseSpeed | Fan speed |
 | **Sensor** | setOnState | Manual sensor state |
 | **I/O Device** | setBinaryOutput | Digital output control |
@@ -247,6 +248,98 @@ Decrease brightness by specified amount.
 **Parameters**:
 - `by` (int, optional): Amount to decrease brightness (default: 10)
 - `delay` (int, optional): Seconds to wait before executing
+
+## Color Commands (`indigo.dimmer`)
+
+Available for: DimmerDevice with color capabilities (`supportsRGB`, `supportsWhiteTemperature`, `supportsWhite`)
+
+### setColorLevels
+
+Set RGB color, white level, and/or color temperature in a single command. All color channel parameters are optional — include only the channels you want to change.
+
+```json
+{
+  "message": "indigo.dimmer.setColorLevels",
+  "objectId": 123456789,
+  "parameters": {
+    "redLevel": 100,
+    "greenLevel": 50,
+    "blueLevel": 0,
+    "whiteLevel": 0,
+    "whiteLevel2": 0,
+    "whiteTemperature": 3500
+  }
+}
+```
+
+**Parameters** (all optional — include only channels being set):
+- `redLevel` (int): Red channel 0-100
+- `greenLevel` (int): Green channel 0-100
+- `blueLevel` (int): Blue channel 0-100
+- `whiteLevel` (int): White channel 0-100 (warm white on RGBW devices)
+- `whiteLevel2` (int): Second white channel 0-100 (cool white on dual-white devices)
+- `whiteTemperature` (int): Color temperature in Kelvin (typically 2000-6500)
+- `delay` (int, optional): Seconds to wait before executing
+
+**Important**: This is a single combined command — there are no separate `setRedLevel`, `setGreenLevel`, etc. commands. Always use `setColorLevels` with the appropriate parameter keys.
+
+#### Example — Set RGB Color (Orange)
+
+```json
+{
+  "message": "indigo.dimmer.setColorLevels",
+  "objectId": 123456789,
+  "parameters": {
+    "redLevel": 100,
+    "greenLevel": 50,
+    "blueLevel": 0
+  }
+}
+```
+
+#### Example — Set Color Temperature (Warm White)
+
+```json
+{
+  "message": "indigo.dimmer.setColorLevels",
+  "objectId": 123456789,
+  "parameters": {
+    "whiteTemperature": 2700
+  }
+}
+```
+
+#### Example — Set White Level Only
+
+```json
+{
+  "message": "indigo.dimmer.setColorLevels",
+  "objectId": 123456789,
+  "parameters": {
+    "whiteLevel": 80
+  }
+}
+```
+
+### Color Device Properties
+
+Devices with color support expose these properties:
+
+| Property | Type | Range | Description |
+|----------|------|-------|-------------|
+| `supportsRGB` | bool | — | Device can set red/green/blue channels |
+| `supportsWhiteTemperature` | bool | — | Device can set color temperature |
+| `supportsWhite` | bool | — | Device has white channel(s) |
+| `redLevel` | int | 0-100 | Current red channel level |
+| `greenLevel` | int | 0-100 | Current green channel level |
+| `blueLevel` | int | 0-100 | Current blue channel level |
+| `whiteLevel` | int | 0-100 | Current white channel level |
+| `whiteLevel2` | int | 0-100 | Second white channel (cool white) |
+| `whiteTemperature` | int | Kelvin | Current color temperature |
+
+### Color Mode
+
+Devices may report a `colorMode` state (via `states["colorMode"]`) indicating whether they are currently in `"rgb"` or `"colorTemp"` mode. When sending RGB parameters the device switches to RGB mode; when sending `whiteTemperature` it switches to color temperature mode.
 
 ## Speed Control Commands (`indigo.speedcontrol`)
 
@@ -518,6 +611,26 @@ Execute action group.
   "message": "indigo.device.turnOn",
   "objectId": 123456789,
   "parameters": {"duration": 60}
+}
+```
+
+### Set Light to Warm White (2700K)
+
+```json
+{
+  "message": "indigo.dimmer.setColorLevels",
+  "objectId": 123456789,
+  "parameters": {"whiteTemperature": 2700}
+}
+```
+
+### Set Light to Blue
+
+```json
+{
+  "message": "indigo.dimmer.setColorLevels",
+  "objectId": 123456789,
+  "parameters": {"redLevel": 0, "greenLevel": 0, "blueLevel": 100}
 }
 ```
 
